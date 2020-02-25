@@ -56,10 +56,13 @@ export const requestPopularBooks = (
   countPerPage?: number,
 ): Promise<PopularBooksResponse> => {
   const paramsArray = [];
-  paramsArray.push(userGroup ? `user_group=${userGroup}` : '');
-  paramsArray.push(page ? `offset=${page - 1}` : '');
-  paramsArray.push(countPerPage ? `limit=${countPerPage}` : '');
-
+  if (userGroup) {
+    paramsArray.push(`user_group=${userGroup}`);
+  }
+  if (page) {
+    paramsArray.push(`offset=${page - 1}`);
+  }
+  paramsArray.push(`limit=${countPerPage || COUNT_PER_PAGE}`);
   return request({
     url: `${env.BESTSELLER_API}/select/popular/books${
       paramsArray.length > 0 ? `?${paramsArray.join('&')}` : ''

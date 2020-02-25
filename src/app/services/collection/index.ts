@@ -209,7 +209,7 @@ collectionReducer.on(
 
 collectionReducer.on(Actions.loadPopularBooksRequest, (state = INITIAL_STATE, { page = 1 }) => ({
   ...state,
-  poupular: {
+  popular: {
     ...state.popular,
     id: 'popular',
     itemListByPage: {

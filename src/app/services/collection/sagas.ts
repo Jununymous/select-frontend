@@ -4,7 +4,11 @@ import history from 'app/config/history';
 import { FetchErrorFlag } from 'app/constants';
 import { Actions as BookActions } from 'app/services/book';
 import { Actions } from 'app/services/collection';
-import { CollectionResponse, requestCollection } from 'app/services/collection/requests';
+import {
+  CollectionResponse,
+  requestCollection,
+  requestPopularBooks,
+} from 'app/services/collection/requests';
 import {
   fixWrongPaginationScope,
   isValidPaginationParameter,
@@ -57,6 +61,29 @@ export function* watchCollectionFailure() {
   }
 }
 
+export function* loadPopularBooksRequest({
+  payload,
+}: ReturnType<typeof Actions.loadPopularBooksRequest>) {
+  const { page, userGroup } = payload;
+  try {
+    const popularBooksResponse = yield call(requestPopularBooks, userGroup);
+    yield put(
+      Actions.afterLoadPopularBooks({
+        page,
+        books: popularBooksResponse.books,
+        count: popularBooksResponse.count,
+      }),
+    );
+  } catch {
+    toast.failureMessage('인기 도서 목록을 불러오는데 실패했습니다.');
+    yield put(Actions.afterLoadPopularBooks({ page }));
+  }
+}
+
+export function* watchLoadPopularBooks() {
+  yield takeEvery(Actions.loadPopularBooksRequest, loadPopularBooksRequest);
+}
+
 export function* collectionsRootSaga() {
-  yield all([watchLoadCollection(), watchCollectionFailure()]);
+  yield all([watchLoadCollection(), watchCollectionFailure(), watchLoadPopularBooks()]);
 }
