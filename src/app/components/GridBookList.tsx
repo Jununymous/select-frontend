@@ -73,11 +73,11 @@ export class GridBookList extends React.Component<Props & ReturnType<typeof mapD
           }}
         >
           <h3 className="GridBookList_ItemTitle">{book.title.main}</h3>
-          {isChart && (
+          {isChart && book.reviewSummary && (
             <span className="HomeSection_ChartBookRating">
-              <StarRating rating={book.reviewSummary!.buyerRatingAverage} />
+              <StarRating rating={book.reviewSummary.buyerRatingAverage} />
               <span className="HomeSection_ChartBookRatingCount">
-                {thousandsSeperator(book.reviewSummary!.buyerRatingCount)}
+                {thousandsSeperator(book.reviewSummary.buyerRatingCount)}
               </span>
             </span>
           )}

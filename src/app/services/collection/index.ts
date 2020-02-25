@@ -234,7 +234,7 @@ collectionReducer.on(
         [page]: {
           fetchStatus: books ? FetchStatusFlag.IDLE : FetchStatusFlag.FETCH_ERROR,
           itemList: books ? books.map(book => book.id) : [],
-          isFetched: false,
+          isFetched: !!books,
         },
       },
       title: '인기 도서',

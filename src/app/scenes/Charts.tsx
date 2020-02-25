@@ -15,7 +15,7 @@ import { MAX_WIDTH, PageTitleText } from 'app/constants';
 import { GridBookListSkeleton } from 'app/placeholder/BookListPlaceholder';
 
 import { BookState } from 'app/services/book';
-import { Actions, ChartCollectionState } from 'app/services/collection';
+import { Actions, ChartCollectionState, COUNT_PER_PAGE } from 'app/services/collection';
 import { getPageQuery } from 'app/services/routing/selectors';
 
 import { RidiSelectState } from 'app/store';
@@ -89,7 +89,7 @@ export class Charts extends React.Component<Props> {
   public render() {
     const { collection, books, page } = this.props;
     const itemCount: number = collection.itemCount ? collection.itemCount : 0;
-    const itemCountPerPage = 24;
+
     return (
       <main className="SceneWrapper">
         <HelmetWithTitle titleName={PageTitleText.CHARTS} />
@@ -112,7 +112,7 @@ export class Charts extends React.Component<Props> {
                 {isMobile => (
                   <Pagination
                     currentPage={page}
-                    totalPages={Math.ceil(itemCount / itemCountPerPage)}
+                    totalPages={Math.ceil(itemCount / COUNT_PER_PAGE)}
                     isMobile={isMobile}
                     item={{
                       el: Link,
