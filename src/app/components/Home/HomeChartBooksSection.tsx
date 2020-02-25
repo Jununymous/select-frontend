@@ -77,12 +77,14 @@ export class HomeChartBooksSection extends React.Component<Props> {
                       >
                         <div className="HomeSection_ChartBookMeta">
                           <span className="HomeSection_ChartBookTitle">{book.title.main}</span>
-                          <span className="HomeSection_ChartBookRating">
-                            <StarRating rating={book.reviewSummary!.buyerRatingAverage} />
-                            <span className="HomeSection_ChartBookRatingCount">
-                              {thousandsSeperator(book.reviewSummary!.buyerRatingCount)}
+                          {book.reviewSummary ? (
+                            <span className="HomeSection_ChartBookRating">
+                              <StarRating rating={book.reviewSummary.buyerRatingAverage} />
+                              <span className="HomeSection_ChartBookRatingCount">
+                                {thousandsSeperator(book.reviewSummary.buyerRatingCount)}
+                              </span>
                             </span>
-                          </span>
+                          ) : null}
                         </div>
                       </Link>
                     </ConnectedTrackImpression>

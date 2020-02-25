@@ -60,8 +60,8 @@ export class HomeSection extends React.Component<Props> {
   public render() {
     const { collection, onScreen, books, order } = this.props;
     const { type, title, id, itemListByPage } = collection;
-    const collectionBooks: Book[] = itemListByPage[1].itemList.map(
-      (bookId: number) => books[bookId].book!,
+    const collectionBooks: Book[] = itemListByPage[1]?.itemList?.map(
+      (bookId: number) => books[bookId]?.book,
     );
 
     if (

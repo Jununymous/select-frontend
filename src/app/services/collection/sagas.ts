@@ -67,6 +67,7 @@ export function* loadPopularBooksRequest({
   const { page, userGroup } = payload;
   try {
     const popularBooksResponse = yield call(requestPopularBooks, userGroup);
+    yield put(BookActions.updateBooks({ books: popularBooksResponse.books }));
     yield put(
       Actions.afterLoadPopularBooks({
         page,

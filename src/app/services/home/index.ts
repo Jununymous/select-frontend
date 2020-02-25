@@ -1,7 +1,8 @@
 import { FetchStatusFlag } from 'app/constants';
 import { isRidiselectUrl } from 'app/utils/regexHelper';
 import { createAction, createReducer } from 'redux-act';
-import { HomeResponse } from './requests';
+import { CollectionId } from 'app/services/collection';
+import { HomeResponse } from 'app/services/home/requests';
 
 export const Actions = {
   loadHomeRequest: createAction('loadHomeRequest'),
@@ -48,14 +49,15 @@ homeReducer.on(Actions.loadHomeRequest, (state, action) => ({
 
 homeReducer.on(Actions.loadHomeSuccess, (state, action) => {
   const { response, fetchedAt, isIosInApp } = action;
-
+  const collectionIdList = response.collections.map(collection => collection.collectionId);
+  collectionIdList.splice(2, 0, 0);
   return {
     ...state,
     fetchedAt,
     bigBannerList: isIosInApp
       ? response.banners.filter(banner => isRidiselectUrl(banner.linkUrl))
       : response.banners,
-    collectionIdList: response.collections.map(collection => collection.collectionId),
+    collectionIdList,
     fetchStatus: FetchStatusFlag.IDLE,
   };
 });

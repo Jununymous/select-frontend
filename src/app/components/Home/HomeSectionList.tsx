@@ -95,7 +95,7 @@ export class HomeSectionList extends React.Component<
           <ConnectedHomeSection key={spotlight.id} collection={spotlight} onScreen />
         </div>
         {collectionIdList
-          .map(collectionId => collections[collectionId])
+          .map(collectionId => collections[collectionId === 0 ? 'popular' : collectionId])
           .reduce(groupCollections, [])
           .map((collectionGroup, idx) => (
             <div
