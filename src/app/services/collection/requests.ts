@@ -53,11 +53,15 @@ export const requestCollection = (
   );
 };
 
-export const requestPopularBooks = (
-  userGroup?: number,
-  page?: number,
-  countPerPage?: number,
-): Promise<PopularBooksResponse> => {
+export const requestPopularBooks = ({
+  userGroup,
+  page,
+  countPerPage,
+}: {
+  userGroup?: number;
+  page?: number;
+  countPerPage?: number;
+}): Promise<PopularBooksResponse> => {
   const paramsArray = [];
   if (userGroup) {
     paramsArray.push(`user_group=${userGroup}`);

@@ -1,4 +1,3 @@
-import { RidiSelectState } from 'app/store';
 import React from 'react';
 import { connect } from 'react-redux';
 
@@ -19,7 +18,7 @@ import { SectionHeader } from './HomeSection';
 
 interface HomeChartBooksSectionProps {
   books: Book[];
-  title: string;
+  title?: string;
   collectionId: CollectionId;
   order?: number;
 }
@@ -102,7 +101,7 @@ export class HomeChartBooksSection extends React.Component<Props> {
 
     return (
       <div className="HomeSection HomeSection-horizontal-pad">
-        <SectionHeader title={title} link="/charts" />
+        <SectionHeader title={title || '인기 도서'} link="/charts" />
         <MediaQuery maxWidth={MAX_WIDTH}>
           {isMobile => (isMobile ? this.renderCharts(24) : this.renderCharts(12))}
         </MediaQuery>

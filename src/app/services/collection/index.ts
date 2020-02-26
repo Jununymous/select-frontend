@@ -77,7 +77,7 @@ export const Actions = {
   }>('loadCollectionSuccess'),
 
   loadPopularBooksRequest: createAction<{
-    page?: number;
+    page: number;
   }>('loadPopularBooksRequest'),
 
   afterLoadPopularBooks: createAction<{

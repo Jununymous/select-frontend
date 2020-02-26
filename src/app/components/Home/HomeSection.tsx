@@ -61,7 +61,8 @@ export class HomeSection extends React.Component<Props> {
     const { collection, onScreen, books, order } = this.props;
     const { type, title, id, itemListByPage } = collection;
     const collectionBooks: Book[] = itemListByPage[1]?.itemList?.map(
-      (bookId: number) => books[bookId]?.book,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      (bookId: number) => books[bookId]?.book!,
     );
 
     if (
@@ -80,7 +81,7 @@ export class HomeSection extends React.Component<Props> {
       return (
         <ConnectedHomeSpotlightSection
           books={collectionBooks}
-          title={title!}
+          title={title}
           collectionId={collection.id}
         />
       );
@@ -90,7 +91,7 @@ export class HomeSection extends React.Component<Props> {
       return (
         <ConnectedHomeChartBooksSection
           books={collectionBooks}
-          title={title!}
+          title={title}
           collectionId={id}
           order={order}
         />
@@ -99,7 +100,7 @@ export class HomeSection extends React.Component<Props> {
 
     return (
       <section className="HomeSection">
-        <SectionHeader title={title!} link={collectionToPath({ collectionId: id })} />
+        <SectionHeader title={title || ''} link={collectionToPath({ collectionId: id })} />
         <MediaQuery maxWidth={MAX_WIDTH}>
           {isMobile => (
             <ConnectedInlineHorizontalBookList
@@ -117,11 +118,8 @@ export class HomeSection extends React.Component<Props> {
   }
 }
 
-const mapStateToProps = (
-  state: RidiSelectState,
-  ownProps: HomeSectionProps,
-): HomeCollectionStateProps => ({
+const mapStateToProps = (state: RidiSelectState): HomeCollectionStateProps => ({
   books: state.booksById,
 });
 
-export const ConnectedHomeSection = connect(mapStateToProps, null)(HomeSection);
+export const ConnectedHomeSection = connect(mapStateToProps, {})(HomeSection);

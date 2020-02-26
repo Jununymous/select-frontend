@@ -15,7 +15,7 @@ import { SliderControls } from './SliderControls';
 interface HomeSpotlightSectionProps {
   books: Book[];
   collectionId: CollectionId;
-  title: string;
+  title?: string;
 }
 
 type Props = HomeSpotlightSectionProps & ReturnType<typeof mapDispatchToProps>;
@@ -50,7 +50,7 @@ export class HomeSpotlightSection extends React.Component<Props> {
       <div className="HomeSection_Spotlight">
         <div className="HomeSection_Spotlight_Contents">
           <div className="HomeSection_Spotlight_Title">
-            {title}
+            {title || '한 주간 별점 베스트'}
             <svg
               className="HomeSection_Spotlight_NewBadge"
               width="42px"

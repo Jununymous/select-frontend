@@ -129,4 +129,4 @@ const mapStateToProps = (state: RidiSelectState): HomeCollectionListStateProps =
   collections: state.collectionsById,
 });
 
-export const ConnectedHomeSectionList = connect(mapStateToProps, null)(HomeSectionList);
+export const ConnectedHomeSectionList = connect(mapStateToProps, {})(HomeSectionList);

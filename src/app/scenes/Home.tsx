@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { HelmetWithTitle } from 'app/components';
 import { ConnectedBigBannerCarousel } from 'app/components/Home/BigBanner';
 import { ConnectedHomeSectionList } from 'app/components/Home/HomeSectionList';
-import { PageTitleText, FetchStatusFlag } from 'app/constants';
+import { PageTitleText } from 'app/constants';
 import { Actions as CollectionActions, CollectionId } from 'app/services/collection';
 import { Actions } from 'app/services/home';
 import { RidiSelectState } from 'app/store';
@@ -89,8 +89,8 @@ const mapDispatchToProps = (dispatch: any) => ({
   dispatchLoadHomeRequest: () => dispatch(Actions.loadHomeRequest()),
   dispatchLoadCollectionRequest: (collectionId: CollectionId) =>
     dispatch(CollectionActions.loadCollectionRequest({ collectionId, page: 1 })),
-  dispatchLoadPopularBooksRequest: (userGroup?: number) =>
-    dispatch(CollectionActions.loadPopularBooksRequest({ userGroup })),
+  dispatchLoadPopularBooksRequest: () =>
+    dispatch(CollectionActions.loadPopularBooksRequest({ page: 1 })),
 });
 
 export const ConnectedHome = connect(mapStateToProps, mapDispatchToProps)(Home);
