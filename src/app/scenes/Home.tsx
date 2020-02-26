@@ -8,13 +8,18 @@ import { HelmetWithTitle } from 'app/components';
 import { ConnectedBigBannerCarousel } from 'app/components/Home/BigBanner';
 import { ConnectedHomeSectionList } from 'app/components/Home/HomeSectionList';
 import { PageTitleText } from 'app/constants';
-import { Actions as CollectionActions, CollectionId } from 'app/services/collection';
+import {
+  Actions as CollectionActions,
+  CollectionId,
+  CollectionsState,
+} from 'app/services/collection';
 import { Actions } from 'app/services/home';
 import { RidiSelectState } from 'app/store';
 import { sendPostRobotInitialRendered } from 'app/utils/inAppMessageEvents';
 
 interface HomeStateProps {
   fetchedAt: number | null;
+  collections: CollectionsState;
 }
 interface State {
   isInitialized: boolean;
@@ -34,6 +39,7 @@ export class Home extends React.PureComponent<
     this.initialDispatchTimeout = window.setTimeout(() => {
       const {
         fetchedAt,
+        collections,
         dispatchLoadHomeRequest,
         dispatchLoadCollectionRequest,
         dispatchLoadPopularBooksRequest,
@@ -43,6 +49,8 @@ export class Home extends React.PureComponent<
       if (!fetchedAt || Math.abs(differenceInHours(fetchedAt, Date.now())) >= 3) {
         dispatchLoadHomeRequest();
         dispatchLoadCollectionRequest('spotlight');
+      }
+      if (!collections.popular?.itemListByPage[1]?.itemList) {
         dispatchLoadPopularBooksRequest();
       }
 
@@ -83,6 +91,7 @@ export class Home extends React.PureComponent<
 
 const mapStateToProps = (state: RidiSelectState): HomeStateProps => ({
   fetchedAt: state.home.fetchedAt,
+  collections: state.collectionsById,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
