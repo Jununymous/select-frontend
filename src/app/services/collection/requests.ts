@@ -18,7 +18,10 @@ export interface CollectionResponse {
 
 export interface PopularBooksResponse {
   books: Book[];
-  count: number;
+  totalCount: number;
+  totalPage: number;
+  size: number;
+  page: number;
 }
 
 export const requestCollection = (
@@ -60,9 +63,9 @@ export const requestPopularBooks = (
     paramsArray.push(`user_group=${userGroup}`);
   }
   if (page) {
-    paramsArray.push(`offset=${page - 1}`);
+    paramsArray.push(`page=${page}`);
   }
-  paramsArray.push(`limit=${countPerPage || COUNT_PER_PAGE}`);
+  paramsArray.push(`size=${countPerPage || COUNT_PER_PAGE}`);
   return request({
     url: `${env.BESTSELLER_API}/select/popular/books${
       paramsArray.length > 0 ? `?${paramsArray.join('&')}` : ''

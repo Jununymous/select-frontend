@@ -1,9 +1,11 @@
-import { all, call, put, take, takeEvery } from 'redux-saga/effects';
+import { all, call, put, take, takeEvery, select } from 'redux-saga/effects';
 
 import history from 'app/config/history';
-import { FetchErrorFlag } from 'app/constants';
-import { Actions as BookActions } from 'app/services/book';
 import { Actions } from 'app/services/collection';
+import { Actions as BookActions } from 'app/services/book';
+import { Actions as UserActions } from 'app/services/user';
+import { FetchErrorFlag, FetchStatusFlag } from 'app/constants';
+import { requestUserGroup } from 'app/services/user/requests';
 import {
   CollectionResponse,
   requestCollection,
@@ -15,6 +17,7 @@ import {
   updateQueryStringParam,
 } from 'app/utils/request';
 import toast from 'app/utils/toast';
+import { RidiSelectState } from 'app/store';
 
 export function* loadCollection({ payload }: ReturnType<typeof Actions.loadCollectionRequest>) {
   const { page, collectionId } = payload;
@@ -64,15 +67,23 @@ export function* watchCollectionFailure() {
 export function* loadPopularBooksRequest({
   payload,
 }: ReturnType<typeof Actions.loadPopularBooksRequest>) {
-  const { page, userGroup } = payload;
+  const { page } = payload;
   try {
+    let userGroup = yield select((state: RidiSelectState) => state.user.userGroup);
+
+    if (!userGroup) {
+      const userGroupResponse = yield call(requestUserGroup);
+      userGroup = userGroupResponse.userGroup;
+      yield put(UserActions.fetchUserGroupInfo({ userGroup }));
+    }
+
     const popularBooksResponse = yield call(requestPopularBooks, userGroup);
     yield put(BookActions.updateBooks({ books: popularBooksResponse.books }));
     yield put(
       Actions.afterLoadPopularBooks({
         page,
         books: popularBooksResponse.books,
-        count: popularBooksResponse.count,
+        totalCount: popularBooksResponse.totalCount,
       }),
     );
   } catch {

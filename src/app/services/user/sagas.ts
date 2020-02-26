@@ -26,7 +26,6 @@ import {
   requestCashReceiptIssue,
   CashReceiptIssueResponse,
   cashReceiptIssueResponseCode,
-  requestUserGroup,
 } from 'app/services/user/requests';
 import { RidiSelectState } from 'app/store';
 import { buildOnlyDateFormat } from 'app/utils/formatDate';
@@ -49,19 +48,6 @@ export function* initializeUser({ payload }: ReturnType<typeof Actions.initializ
 
 export function* watchInitializeUser() {
   yield takeLatest(Actions.initializeUser.getType(), initializeUser);
-}
-
-export function* loadUserGroupRequest() {
-  try {
-    const response = yield call(requestUserGroup);
-    yield put(Actions.afterLoadUserGroupRequest(response));
-  } catch {
-    yield put(Actions.afterLoadUserGroupRequest({ userGroup: undefined }));
-  }
-}
-
-export function* watchLoadUserGroupRequest() {
-  yield takeLatest(Actions.loadUserGroupRequest.getType(), loadUserGroupRequest);
 }
 
 export function* watchLoadAccountsMeRequest() {
@@ -336,7 +322,6 @@ export function* userRootSaga() {
   yield all([
     watchInitializeUser(),
     watchLoadAccountsMeRequest(),
-    watchLoadUserGroupRequest(),
     watchLoadSubscription(),
     watchLoadPurchases(),
     watchLoadMySelectHistory(),

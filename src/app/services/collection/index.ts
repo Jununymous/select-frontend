@@ -75,14 +75,15 @@ export const Actions = {
     page: number;
     error: AxiosError;
   }>('loadCollectionSuccess'),
+
   loadPopularBooksRequest: createAction<{
-    userGroup?: number;
     page?: number;
   }>('loadPopularBooksRequest'),
+
   afterLoadPopularBooks: createAction<{
     books?: Book[];
     page?: number;
-    count?: number;
+    totalCount?: number;
   }>('afterLoadPopularBooks'),
 };
 
@@ -225,7 +226,7 @@ collectionReducer.on(Actions.loadPopularBooksRequest, (state = INITIAL_STATE, { 
 
 collectionReducer.on(
   Actions.afterLoadPopularBooks,
-  (state = INITIAL_STATE, { page = 1, books, count = 0 }) => ({
+  (state = INITIAL_STATE, { page = 1, books, totalCount = 0 }) => ({
     ...state,
     popular: {
       ...state.popular,
@@ -239,7 +240,7 @@ collectionReducer.on(
       },
       title: '인기 도서',
       id: 'popular',
-      itemCount: count,
+      itemCount: totalCount,
       type: CollectionType.CHART,
     },
   }),

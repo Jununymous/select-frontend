@@ -17,14 +17,13 @@ export const Actions = {
   fetchUserInfo: createAction<{
     isFetching: boolean;
   }>('fetchUserInfo'),
+  fetchUserGroupInfo: createAction<{
+    userGroup: number;
+  }>('fetchUserGroupInfo'),
 
   initializeUser: createAction<{
     userDTO: UserDTO;
   }>('initializeUser'),
-  loadUserGroupRequest: createAction('loadUserGroupRequest'),
-  afterLoadUserGroupRequest: createAction<{
-    userGroup?: number;
-  }>('afterLoadUserGroupRequest'),
   loadSubscriptionRequest: createAction('loadSubscriptionRequest'),
 
   loadSubscriptionSuccess: createAction<{
@@ -235,7 +234,7 @@ userReducer.on(Actions.fetchUserInfo, (state = INITIAL_STATE, payload) => ({
   ...payload,
 }));
 
-userReducer.on(Actions.afterLoadUserGroupRequest, (state = INITIAL_STATE, payload) => ({
+userReducer.on(Actions.fetchUserGroupInfo, (state = INITIAL_STATE, payload) => ({
   ...state,
   ...payload,
 }));

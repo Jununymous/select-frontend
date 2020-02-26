@@ -11,7 +11,7 @@ import {
   HelmetWithTitle,
   Pagination,
 } from 'app/components';
-import { MAX_WIDTH, PageTitleText } from 'app/constants';
+import { MAX_WIDTH, PageTitleText, FetchStatusFlag } from 'app/constants';
 import { GridBookListSkeleton } from 'app/placeholder/BookListPlaceholder';
 
 import { BookState } from 'app/services/book';
@@ -24,7 +24,6 @@ interface CollectionStateProps {
   collection: ChartCollectionState;
   books: BookState;
   page: number;
-  userGroup?: number;
 }
 
 interface CollectionDispatchProps {
@@ -56,9 +55,9 @@ export class Charts extends React.Component<Props> {
 
   public componentDidMount() {
     this.initialDispatchTimeout = window.setTimeout(() => {
-      const { dispatchLoadCharts, page, userGroup } = this.props;
+      const { dispatchLoadCharts, page } = this.props;
       if (!this.isFetched(page)) {
-        dispatchLoadCharts(page, userGroup);
+        dispatchLoadCharts(page);
       }
 
       this.initialDispatchTimeout = null;
@@ -68,10 +67,10 @@ export class Charts extends React.Component<Props> {
 
   public shouldComponentUpdate(nextProps: Props) {
     if (nextProps.page !== this.props.page) {
-      const { dispatchLoadCharts, page, userGroup } = nextProps;
+      const { dispatchLoadCharts, page } = nextProps;
 
       if (!this.isFetched(page)) {
-        dispatchLoadCharts(page, userGroup);
+        dispatchLoadCharts(page);
       }
     }
 
@@ -135,8 +134,8 @@ const mapStateToProps = (rootState: RidiSelectState): CollectionStateProps => ({
   collection: rootState.collectionsById.popular,
   books: rootState.booksById,
   page: getPageQuery(rootState),
-  userGroup: rootState.user.userGroup,
 });
+
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   dispatchLoadCharts: (page: number, userGroup?: number) =>
     dispatch(Actions.loadPopularBooksRequest({ userGroup, page })),
