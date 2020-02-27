@@ -31,7 +31,7 @@ export const ArticleFavorite: React.FunctionComponent = () => {
     const pageFromQuery = getPageQuery(state);
 
     return {
-      page: getPageQuery(state),
+      page: pageFromQuery,
       isFetched: state.favoriteArticle.itemListByPage[pageFromQuery]
         ? state.favoriteArticle.itemListByPage[pageFromQuery].isFetched
         : false,
