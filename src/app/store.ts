@@ -67,13 +67,15 @@ import {
 import { downloadSaga } from 'app/services/download/sagas';
 import { userReducer, UserState } from 'app/services/user';
 import { stateHydrator } from 'app/utils/stateHydrator';
-import { articleHomeReducer, ArticleHomeState } from './services/articleHome';
+import { articleHomeReducer, ArticleHomeState } from 'app/services/articleHome';
 import {
   articleChannelListReducer,
   ArticleChannelListState,
   articleChannelReducer,
   ArticleChannelState,
-} from './services/articleChannel';
+} from 'app/services/articleChannel';
+import { PopularArticleListState, popularArticleListReducer } from 'app/services/articlePopular';
+import { articlePopularRootSaga } from 'app/services/articlePopular/sagas';
 
 declare global {
   interface Window {
@@ -103,6 +105,7 @@ function* rootSaga(dispatch: Dispatch) {
     channelRootSaga(),
     articleFollowingRootSaga(),
     articleFavoriteRootSaga(),
+    articlePopularRootSaga(),
   ]);
 }
 
@@ -129,6 +132,7 @@ export interface RidiSelectState {
   articleChannelById: ArticleChannelState;
   articleFollowing: ArticleFollowingState;
   favoriteArticle: FavoriteArticleListState;
+  popularArticle: PopularArticleListState;
 }
 
 const sagaMiddleware = createSagaMiddleware();
@@ -167,6 +171,7 @@ const reducers = combineReducers({
   articleChannelById: articleChannelReducer,
   articleFollowing: articleFollowReducer,
   favoriteArticle: favoriteArticleListReducer,
+  popularArticle: popularArticleListReducer,
 });
 
 const middleware = [routerMiddleware(browserHistory), sagaMiddleware];
