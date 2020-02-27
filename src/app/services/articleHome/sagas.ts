@@ -10,7 +10,7 @@ import {
 import { Actions, ArticleHomeSectionType } from 'app/services/articleHome';
 import { BigBanner } from 'app/services/home';
 import { requestBanner } from 'app/services/home/requests';
-import { ArticleRequestOrderType, ArticleRequestType } from 'app/types';
+import { ArticleRequestType } from 'app/types';
 import showMessageForRequestError from 'app/utils/toastHelper';
 import { getArticleKeyFromData } from 'app/utils/utils';
 import { getIsIosInApp } from '../environment/selectors';
@@ -25,15 +25,7 @@ function* loadArticleHomeSectionListRequest({
         targetSection === ArticleHomeSectionType.RECOMMEND
           ? ArticleRequestType.RECOMMEND
           : undefined,
-      ordering:
-        targetSection === ArticleHomeSectionType.POPULAR
-          ? ArticleRequestOrderType.POPULAR
-          : undefined,
-      exceptRidiChannel:
-        targetSection === ArticleHomeSectionType.RECENT ||
-        targetSection === ArticleHomeSectionType.POPULAR
-          ? true
-          : undefined,
+      exceptRidiChannel: targetSection === ArticleHomeSectionType.RECENT,
     });
     yield put(
       ArticleActions.updateArticles({
