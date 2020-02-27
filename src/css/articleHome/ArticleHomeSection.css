@@ -21,12 +21,3 @@
 .ArticleSection_Header {
   padding: 0 20px;
 }
-
-.ArticleSection_Title {
-  font-family: var(--defaultFontFamily);
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 1.38;
-  letter-spacing: -0.5px;
-  color: var(--gray_100);
-}

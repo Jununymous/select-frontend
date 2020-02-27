@@ -37,17 +37,17 @@ export const SectionHeader: React.SFC<{ title: string; link: string }> = props =
       {isMobile =>
         isMobile ? (
           <Link to={props.link}>
-            <h2 className="HomeSection_Title reset-heading">
+            <h2 className="Section_Title reset-heading">
               {props.title}
-              <Icon name="arrow_5_right" className="HomeSection_TitleArrowIcon" />
+              <Icon name="arrow_5_right" className="Section_TitleArrowIcon" />
             </h2>
           </Link>
         ) : (
-          <div className="HomeSection_Title">
+          <div className="Section_Title">
             <h2 className="reset-heading">{props.title}</h2>
-            <Link to={props.link} className="HomeSection_TitleLink">
+            <Link to={props.link} className="Section_TitleLink">
               전체 보기
-              <Icon name="arrow_5_right" className="HomeSection_TitleArrowIcon" />
+              <Icon name="arrow_5_right" className="Section_TitleArrowIcon" />
             </Link>
           </div>
         )
