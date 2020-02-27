@@ -9,6 +9,7 @@ import { ArticleSectionHeaderPlaceholder } from 'app/placeholder/ArticleSectionH
 import { GridArticleListPlaceholder } from 'app/placeholder/GridArticleListPlaceholder';
 import { ArticleResponse } from 'app/services/article/requests';
 import { Actions, ArticleHomeSectionType, ArticleSectionType } from 'app/services/articleHome';
+import { Actions as PopularArticleActions } from 'app/services/articlePopular';
 import { RidiSelectState } from 'app/store';
 
 interface ArticleHomeSectionProps {
@@ -36,15 +37,29 @@ export const ArticleSectionHeader: React.FunctionComponent<ArticleSectionHeaderP
 
 export const ArticleHomeSection: React.FunctionComponent<ArticleHomeSectionProps> = props => {
   const { title, type, order, articleHomeSectionType } = props;
-  const dispatch = useDispatch();
-  const { sectionData, articles } = useSelector((state: RidiSelectState) => ({
-    sectionData: state.articleHome[articleHomeSectionType],
-    articles: state.articlesById,
-  }));
+  const articles = useSelector((state: RidiSelectState) => state.articlesById);
+  const sectionData = useSelector(
+    (state: RidiSelectState) => state.articleHome[articleHomeSectionType],
+  );
+  const popularArticle = useSelector(
+    (state: RidiSelectState) => state.popularArticle.itemListByPage[1],
+  );
   const ArticleCount =
     articleHomeSectionType && articleHomeSectionType === ArticleHomeSectionType.RECENT ? 8 : 4;
 
+  const dispatch = useDispatch();
   React.useEffect(() => {
+    if (articleHomeSectionType === ArticleHomeSectionType.POPULAR) {
+      if (
+        popularArticle?.itemList !== undefined ||
+        popularArticle?.fetchStatus === FetchStatusFlag.FETCHING
+      ) {
+        return;
+      }
+      dispatch(PopularArticleActions.loadPopularArticlesRequest({ page: 1 }));
+      return;
+    }
+
     if (
       sectionData.fetchStatus === FetchStatusFlag.FETCHING ||
       (sectionData.fetchStatus === FetchStatusFlag.IDLE && sectionData.articles !== undefined)
@@ -57,17 +72,18 @@ export const ArticleHomeSection: React.FunctionComponent<ArticleHomeSectionProps
   if (type === ArticleSectionType.CHART) {
     return (
       <section className="ArticleHomeSection">
-        {!sectionData.articles ? (
+        {popularArticle?.fetchStatus === FetchStatusFlag.FETCHING ? (
           <>
             <ArticleSectionHeaderPlaceholder />
             <ArticleSectionChartListPlaceholder />
           </>
-        ) : (
+        ) : popularArticle?.itemList ? (
           <>
             <ArticleSectionHeader title={title} />
             <ArticleSectionChartList
               articleList={
-                sectionData.articles && sectionData.articles.map(id => articles[id].article!)
+                popularArticle?.itemList &&
+                popularArticle?.itemList.map(id => articles[id].article!)
               }
               serviceTitleForTracking="select-article"
               pageTitleForTracking="home"
@@ -75,7 +91,7 @@ export const ArticleHomeSection: React.FunctionComponent<ArticleHomeSectionProps
               miscTracking={JSON.stringify({ sect_order: order })}
             />
           </>
-        )}
+        ) : null}
       </section>
     );
   }
