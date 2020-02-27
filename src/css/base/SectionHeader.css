@@ -1,0 +1,73 @@
+.Section_Title {
+  box-sizing: border-box;
+  display: inline-block;
+  position: relative;
+  max-width: 100%;
+  height: 19px;
+  margin: 0;
+  padding-right: 10px;
+  overflow: hidden;
+  color: #000;
+  font-size: 16px;
+  text-decoration: unset;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  @media (--pc-screen) {
+    display: block;
+    width: 100%;
+    padding-right: 80px;
+    font-size: 17px;
+  }
+}
+
+.Section_TitleArrowIcon {
+  position: absolute;
+  top: 4px;
+  right: 0;
+  width: 6px;
+  height: 10px;
+  margin-left: 6px;
+  transition: fill 0.2s;
+  fill: #636c73;
+
+  @media (--pc-screen) {
+    position: relative;
+    top: initial;
+    right: initial;
+    fill: #b8bfc4;
+  }
+}
+
+.Section_TitleLink {
+  float: right;
+  color: #808991;
+  font-size: 14px;
+  font-weight: 400;
+  text-decoration: none;
+  transition: color 0.2s;
+
+  @media (--pc-screen) {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      color: var(--slategray_70);
+      & .Section_TitleArrowIcon {
+        fill: var(--slategray_50);
+      }
+    }
+  }
+
+  @media (hover: none) {
+    &:active {
+      color: var(--slategray_70);
+      & .Section_TitleArrowIcon {
+        fill: var(--slategray_50);
+      }
+    }
+  }
+}
