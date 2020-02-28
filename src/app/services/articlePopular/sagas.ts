@@ -16,7 +16,7 @@ export function* loadPopularArticlesRequest({
     const response: PopularArticleListResponse = yield call(requestPopularArticleList, { page });
     yield put(
       Actions.updateArticles({
-        articles: response.articles.map(data => data.article),
+        articles: response.articles,
       }),
     );
     yield put(ArticleActions.afterLoadPopularArticles({ page, response }));

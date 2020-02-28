@@ -1,6 +1,5 @@
 import { createAction, createReducer } from 'redux-act';
 
-import { Article } from 'app/services/article';
 import { FetchStatusFlag } from 'app/constants';
 import { ArticleKey, Paginated } from 'app/types';
 import { PopularArticleListResponse } from 'app/services/articlePopular/requests';
@@ -15,12 +14,6 @@ export const Actions = {
     response?: PopularArticleListResponse;
   }>('afterLoadPopularArticles'),
 };
-
-export interface PopularArticle {
-  id: number;
-  articleId: number;
-  article: Article;
-}
 
 export type PopularArticleListState = Paginated<ArticleKey>;
 
@@ -56,7 +49,7 @@ popularArticleListReducer.on(Actions.afterLoadPopularArticles, (state, action) =
           ...state.itemListByPage,
           [page]: {
             fetchStatus: FetchStatusFlag.IDLE,
-            itemList: response.articles.map(data => getArticleKeyFromData(data.article)),
+            itemList: response.articles.map(article => getArticleKeyFromData(article)),
             isFetched: true,
           },
         },
