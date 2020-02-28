@@ -2,17 +2,18 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { ArticleThumbnail } from 'app/components/ArticleThumbnail';
-import { ConnectedTrackImpression } from 'app/components/TrackImpression';
+import Arrow from 'app/components/Arrow';
 import { ImageSize } from 'app/constants';
-import { ArticleResponse } from 'app/services/article/requests';
-import { Actions as TrackingActions, DefaultTrackingParams } from 'app/services/tracking';
-import { getSectionStringForTracking, mixedMiscTracking } from 'app/services/tracking/utils';
 import { RidiSelectState } from 'app/store';
 import { articleChannelToPath } from 'app/utils/toPath';
 import { getArticleKeyFromData } from 'app/utils/utils';
-
-import { ThumbnailShape } from './ArticleThumbnail/types';
+import { useScrollSlider } from 'app/hooks/useScrollSlider';
+import { ArticleResponse } from 'app/services/article/requests';
+import { ArticleThumbnail } from 'app/components/ArticleThumbnail';
+import { ThumbnailShape } from 'app/components/ArticleThumbnail/types';
+import { ConnectedTrackImpression } from 'app/components/TrackImpression';
+import { Actions as TrackingActions, DefaultTrackingParams } from 'app/services/tracking';
+import { getSectionStringForTracking, mixedMiscTracking } from 'app/services/tracking/utils';
 
 const CHART_GROUPING_COUNT = 5;
 
@@ -25,6 +26,9 @@ interface ArticleSectionChartListProps {
 }
 
 export const ArticleSectionChartList: React.FunctionComponent<ArticleSectionChartListProps> = props => {
+  const ref = React.useRef<HTMLDivElement>(null);
+  const [moveLeft, moveRight, isOnTheLeft, isOnTheRight] = useScrollSlider(ref, true);
+
   const {
     articleList,
     serviceTitleForTracking,
@@ -46,7 +50,7 @@ export const ArticleSectionChartList: React.FunctionComponent<ArticleSectionChar
   const dispatch = useDispatch();
   const groupChartActicles = (articles: ArticleResponse[], groupingUnitCount: number) => {
     const groupedArticles: ArticleResponse[][] = [];
-    articles.slice(0, 10).map((article, idx) => {
+    articles.map((article, idx) => {
       if (idx % groupingUnitCount === 0) {
         groupedArticles.push([article]);
       } else {
@@ -76,72 +80,90 @@ export const ArticleSectionChartList: React.FunctionComponent<ArticleSectionChar
 
   return (
     <div className="ArticleChartList_Wrapper">
-      {articleList &&
-        articleList &&
-        groupChartActicles(articleList, CHART_GROUPING_COUNT).map((groupedArticles, groupIdx) => (
-          <ol className="ArticleChartGroup" start={groupIdx * 5 + 1} key={groupIdx}>
-            {groupedArticles.map((article, idxInGroup) => {
-              const index = groupIdx * CHART_GROUPING_COUNT + idxInGroup;
-              const articleUrl = `/article/${getArticleKeyFromData(article)}`;
-              const channelMeta =
-                articleChannelById &&
-                articleChannelById[article.channelName] &&
-                articleChannelById[article.channelName].channelMeta;
-              return (
-                <li key={idxInGroup} className="ArticleChartList_Article">
-                  <ConnectedTrackImpression
-                    section={section}
-                    index={index}
-                    id={article.id}
-                    misc={miscTracking}
-                  >
-                    <span className="ArticleChartList_Rank">{index + 1}</span>
-                    <ArticleThumbnail
-                      linkUrl={articleUrl}
-                      imageUrl={article.thumbnailUrl}
-                      articleTitle={article.title}
-                      thumbnailShape={ThumbnailShape.SQUARE}
-                      imageSize={ImageSize.HEIGHT_100}
-                      onLinkClick={() =>
-                        trackingClick(
-                          index,
-                          article.id,
-                          JSON.stringify({ sect_ch: `ch:${channelMeta!.id}` }),
-                        )
-                      }
-                    />
-                    <div className="ArticleChartList_Meta">
-                      <Link
-                        className="ArticleChartList_Meta_Link"
-                        to={articleUrl}
-                        onClick={() =>
+      <div className="ArticleChartGroup_Container" ref={ref}>
+        {articleList &&
+          articleList &&
+          groupChartActicles(articleList, CHART_GROUPING_COUNT).map((groupedArticles, groupIdx) => (
+            <ol className="ArticleChartGroup" start={groupIdx * 5 + 1} key={groupIdx}>
+              {groupedArticles.map((article, idxInGroup) => {
+                const index = groupIdx * CHART_GROUPING_COUNT + idxInGroup;
+                const articleUrl = `/article/${getArticleKeyFromData(article)}`;
+                const channelMeta =
+                  articleChannelById &&
+                  articleChannelById[article.channelName] &&
+                  articleChannelById[article.channelName].channelMeta;
+                return (
+                  <li key={idxInGroup} className="ArticleChartList_Article">
+                    <ConnectedTrackImpression
+                      section={section}
+                      index={index}
+                      id={article.id}
+                      misc={miscTracking}
+                    >
+                      <span className="ArticleChartList_Rank">{index + 1}</span>
+                      <ArticleThumbnail
+                        linkUrl={articleUrl}
+                        imageUrl={article.thumbnailUrl}
+                        articleTitle={article.title}
+                        thumbnailShape={ThumbnailShape.SQUARE}
+                        imageSize={ImageSize.HEIGHT_100}
+                        onLinkClick={() =>
                           trackingClick(
                             index,
                             article.id,
                             JSON.stringify({ sect_ch: `ch:${channelMeta!.id}` }),
                           )
                         }
-                      >
-                        <span className="ArticleChartList_Meta_Title">{article.title}</span>
-                      </Link>
-                      {channelMeta ? (
+                      />
+                      <div className="ArticleChartList_Meta">
                         <Link
-                          className="ArticleChartList_Channel_Link"
-                          to={articleChannelToPath({ channelName: channelMeta.name })}
-                          onClick={() => trackingClick(index, `ch:${channelMeta.id}`)}
+                          className="ArticleChartList_Meta_Link"
+                          to={articleUrl}
+                          onClick={() =>
+                            trackingClick(
+                              index,
+                              article.id,
+                              JSON.stringify({ sect_ch: `ch:${channelMeta!.id}` }),
+                            )
+                          }
                         >
-                          <span className="ArticleChartList_Meta_Channel">
-                            {channelMeta.displayName}
-                          </span>
+                          <span className="ArticleChartList_Meta_Title">{article.title}</span>
                         </Link>
-                      ) : null}
-                    </div>
-                  </ConnectedTrackImpression>
-                </li>
-              );
-            })}
-          </ol>
-        ))}
+                        {channelMeta ? (
+                          <Link
+                            className="ArticleChartList_Channel_Link"
+                            to={articleChannelToPath({ channelName: channelMeta.name })}
+                            onClick={() => trackingClick(index, `ch:${channelMeta.id}`)}
+                          >
+                            <span className="ArticleChartList_Meta_Channel">
+                              {channelMeta.displayName}
+                            </span>
+                          </Link>
+                        ) : null}
+                      </div>
+                    </ConnectedTrackImpression>
+                  </li>
+                );
+              })}
+            </ol>
+          ))}
+      </div>
+      <Arrow
+        label="이전"
+        side="left"
+        onClickHandler={moveLeft}
+        arrowClass="SlideArrowButton_Left"
+        arrowGradient="ArrowButtonGradient_Left"
+        arrowTransition={!isOnTheLeft && 'arrowTransition'}
+      />
+      <Arrow
+        label="다음"
+        side="right"
+        onClickHandler={moveRight}
+        arrowClass="SlideArrowButton_Right"
+        arrowGradient="ArrowButtonGradient_Right"
+        arrowTransition={!isOnTheRight && 'arrowTransition'}
+      />
     </div>
   );
 };
