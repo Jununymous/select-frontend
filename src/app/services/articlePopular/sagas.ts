@@ -11,9 +11,12 @@ import toast from 'app/utils/toast';
 export function* loadPopularArticlesRequest({
   payload,
 }: ReturnType<typeof Actions.loadPopularArticlesRequest>) {
-  const { page } = payload;
+  const { page, size = 20 } = payload;
   try {
-    const response: PopularArticleListResponse = yield call(requestPopularArticleList, { page });
+    const response: PopularArticleListResponse = yield call(requestPopularArticleList, {
+      page,
+      countPerPage: size,
+    });
     yield put(
       ArticleActions.updateArticles({
         articles: response.articles,
