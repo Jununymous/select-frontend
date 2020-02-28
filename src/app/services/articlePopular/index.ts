@@ -8,6 +8,7 @@ import { getArticleKeyFromData } from 'app/utils/utils';
 export const Actions = {
   loadPopularArticlesRequest: createAction<{
     page: number;
+    size?: number;
   }>('loadPopularArticlesRequest'),
   afterLoadPopularArticles: createAction<{
     page: number;
