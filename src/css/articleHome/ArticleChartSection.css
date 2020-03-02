@@ -1,11 +1,13 @@
 .ArticleChartList_Wrapper {
   position: relative;
+  @media (--pc-screen) {
+    padding: 0 10px;
+  }
 }
 
 .ArticleChartGroup_Container {
   display: block;
   margin-top: 20px;
-  padding: 0 20px;
   white-space: nowrap;
   overflow-x: auto;
   overflow-y: hidden;
@@ -16,10 +18,10 @@
   display: inline-block;
   vertical-align: top;
   margin: 0;
-  padding: 0 20px 0 0;
+  padding: 0 10px;
   @media (--pc-screen) {
-    margin-right: 20px;
-    padding-right: 0px;
+    margin: 0 10px;
+    padding: 0;
   }
 }
 
@@ -60,7 +62,7 @@
   box-sizing: border-box;
 
   @media (min-width: 601px) {
-    width: 294px;
+    width: 304px;
   }
 }
 

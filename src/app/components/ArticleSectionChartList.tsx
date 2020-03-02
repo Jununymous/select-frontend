@@ -1,6 +1,7 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import MediaQuery from 'react-responsive';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Arrow from 'app/components/Arrow';
 import { ImageSize } from 'app/constants';
@@ -148,22 +149,30 @@ export const ArticleSectionChartList: React.FunctionComponent<ArticleSectionChar
             </ol>
           ))}
       </div>
-      <Arrow
-        label="이전"
-        side="left"
-        onClickHandler={moveLeft}
-        arrowClass="SlideArrowButton_Left"
-        arrowGradient="ArrowButtonGradient_Left"
-        arrowTransition={!isOnTheLeft && 'arrowTransition'}
-      />
-      <Arrow
-        label="다음"
-        side="right"
-        onClickHandler={moveRight}
-        arrowClass="SlideArrowButton_Right"
-        arrowGradient="ArrowButtonGradient_Right"
-        arrowTransition={!isOnTheRight && 'arrowTransition'}
-      />
+      <MediaQuery maxWidth={899}>
+        {(isMobile: boolean) => (
+          <>
+            <Arrow
+              label="이전"
+              side="left"
+              onClickHandler={moveLeft}
+              renderGradient={isMobile}
+              className="SlideArrowButton_Left"
+              gradientClassName="ArrowButtonGradient_Left"
+              transition={!isOnTheLeft && 'arrowTransition'}
+            />
+            <Arrow
+              label="다음"
+              side="right"
+              onClickHandler={moveRight}
+              renderGradient={isMobile}
+              className="SlideArrowButton_Right"
+              gradientClassName="ArrowButtonGradient_Right"
+              transition={!isOnTheRight && 'arrowTransition'}
+            />
+          </>
+        )}
+      </MediaQuery>
     </div>
   );
 };

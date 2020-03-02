@@ -101,18 +101,20 @@ export const SlideChannelList: React.FunctionComponent<SlideChannelListProps> = 
       <Arrow
         label="이전"
         side="left"
+        renderGradient
         onClickHandler={moveLeft}
-        arrowClass="SlideArrowButton_Left"
-        arrowGradient="ArrowButtonGradient_Left"
-        arrowTransition={!isOnTheLeft && 'arrowTransition'}
+        className="SlideArrowButton_Left"
+        gradientClassName="ArrowButtonGradient_Left"
+        transition={!isOnTheLeft && 'arrowTransition'}
       />
       <Arrow
         label="다음"
         side="right"
+        renderGradient
         onClickHandler={moveRight}
-        arrowClass="SlideArrowButton_Right"
-        arrowGradient="ArrowButtonGradient_Right"
-        arrowTransition={!isOnTheRight && 'arrowTransition'}
+        className="SlideArrowButton_Right"
+        gradientClassName="ArrowButtonGradient_Right"
+        transition={!isOnTheRight && 'arrowTransition'}
       />
     </section>
   );
