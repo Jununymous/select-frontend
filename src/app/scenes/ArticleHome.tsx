@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { HelmetWithTitle } from 'app/components';
 import { ArticleHomeSection } from 'app/components/ArticleHome/ArticleHomeSection';
-import { ConnectedBigBannerCarousel } from 'app/components/Home/BigBanner';
+import BigBanner from 'app/components/Home/BigBanner';
 import { FetchStatusFlag, PageTitleText } from 'app/constants';
 import { Actions as ArticleFollowingActions } from 'app/services/articleFollowing';
 import { Actions, ArticleHomeSectionType, ArticleSectionType } from 'app/services/articleHome';
@@ -49,7 +49,7 @@ export const ArticleHome: React.FunctionComponent = () => {
       <div className="a11y">
         <h1>리디셀렉트 아티클 홈</h1>
       </div>
-      <ConnectedBigBannerCarousel />
+      <BigBanner />
       <div className="ArticleHome_Panel">
         <ArticleHomeSection
           title="최근 추가된 아티클"
