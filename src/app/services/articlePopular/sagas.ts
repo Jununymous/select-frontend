@@ -1,7 +1,7 @@
 import { all, takeLatest, call, put } from 'redux-saga/effects';
 
-import { Actions as ArticleActions } from 'app/services/articlePopular';
-import { Actions } from 'app/services/article';
+import { Actions } from 'app/services/articlePopular';
+import { Actions as ArticleActions } from 'app/services/article';
 import {
   PopularArticleListResponse,
   requestPopularArticleList,
@@ -15,19 +15,19 @@ export function* loadPopularArticlesRequest({
   try {
     const response: PopularArticleListResponse = yield call(requestPopularArticleList, { page });
     yield put(
-      Actions.updateArticles({
+      ArticleActions.updateArticles({
         articles: response.articles,
       }),
     );
-    yield put(ArticleActions.afterLoadPopularArticles({ page, response }));
+    yield put(Actions.afterLoadPopularArticles({ page, response }));
   } catch {
     toast.failureMessage('인기 아티클 목록을 불러오는데 실패했습니다.');
-    yield put(ArticleActions.afterLoadPopularArticles({ page }));
+    yield put(Actions.afterLoadPopularArticles({ page }));
   }
 }
 
 export function* watchLoadPopularArticlesRequest() {
-  yield takeLatest(ArticleActions.loadPopularArticlesRequest.getType(), loadPopularArticlesRequest);
+  yield takeLatest(Actions.loadPopularArticlesRequest.getType(), loadPopularArticlesRequest);
 }
 
 export function* articlePopularRootSaga() {
