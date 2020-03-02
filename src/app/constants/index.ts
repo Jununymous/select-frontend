@@ -50,6 +50,7 @@ export enum PageTitleText {
   ARTICLE_CHANNEL = '전체 채널',
   ARTICLE_FAVORITE = '좋아한 아티클',
   ARTICLE_POPULAR = '인기 아티클',
+  ARTICLE_RECENT = '최신 아티클',
 }
 
 export enum RoutePaths {
@@ -82,4 +83,5 @@ export enum RoutePaths {
   ARTICLE_FAVORITE = '/article/favorite',
   ARTICLE_CONTENT = '/article/@:channelName/:contentIndex',
   ARTICLE_POPULAR = '/article/popular',
+  ARTICLE_RECENT = '/article/recent',
 }
