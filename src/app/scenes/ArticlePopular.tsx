@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { RidiSelectState } from 'app/store';
-import { HelmetWithTitle } from 'app/components';
+import { HelmetWithTitle, ConnectedPageHeader } from 'app/components';
 import { Actions } from 'app/services/articlePopular';
 import { Actions as TrackingActions } from 'app/services/tracking';
 import { getArticleKeyFromData } from 'app/utils/utils';
@@ -13,6 +13,8 @@ import { ArticleThumbnail } from 'app/components/ArticleThumbnail';
 import { ThumbnailShape } from 'app/components/ArticleThumbnail/types';
 import { Link } from 'react-router-dom';
 import { articleChannelToPath } from 'app/utils/toPath';
+import { ArticleEmpty } from 'app/components/ArticleEmpty';
+import { ArticleChartListPlaceholder } from 'app/placeholder/ArticleChartListPlaceholder';
 
 const ArticlePopular: React.FunctionComponent = () => {
   const popularArticles = useSelector(
@@ -34,7 +36,7 @@ const ArticlePopular: React.FunctionComponent = () => {
     if (
       !popularArticles ||
       (!popularArticles?.itemList && popularArticles.fetchStatus !== FetchStatusFlag.FETCHING) ||
-      popularArticles.itemList.length <= 100
+      popularArticles.itemList.length < 100
     ) {
       dispatch(Actions.loadPopularArticlesRequest({ page: 1, size: 100 }));
     }
@@ -43,67 +45,75 @@ const ArticlePopular: React.FunctionComponent = () => {
   return (
     <main className="SceneWrapper SceneWrapper_WithGNB SceneWrapper_WithLNB PageArticlePopular">
       <HelmetWithTitle titleName={PageTitleText.ARTICLE_POPULAR} />
+      <ConnectedPageHeader pageTitle={PageTitleText.ARTICLE_POPULAR} />
       <ul>
-        {popularArticles?.itemList?.map((articleKey, idx) => {
-          const { article } = articles[articleKey];
-          const articleUrl = `/article/${getArticleKeyFromData(article)}`;
-          const channelMeta =
-            articleChannelById &&
-            articleChannelById[article.channelName] &&
-            articleChannelById[article.channelName].channelMeta;
-          return (
-            <li key={`popular_article_${idx}`} className="ArticleChartList_Article">
-              <ConnectedTrackImpression
-                section={section}
-                index={idx}
-                id={article.id}
-                misc={JSON.stringify({ sect_ch: `ch:${channelMeta!.id}` })}
-              >
-                <span className="ArticleChartList_Rank">{idx + 1}</span>
-                <ArticleThumbnail
-                  linkUrl={articleUrl}
-                  imageUrl={article.thumbnailUrl}
-                  articleTitle={article.title}
-                  thumbnailShape={ThumbnailShape.SQUARE}
-                  imageSize={ImageSize.HEIGHT_100}
-                  onLinkClick={() =>
-                    trackingClick(
-                      idx,
-                      article.id,
-                      JSON.stringify({ sect_ch: `ch:${channelMeta!.id}` }),
-                    )
-                  }
-                />
-                <div className="ArticleChartList_Meta">
-                  <Link
-                    className="ArticleChartList_Meta_Link"
-                    to={articleUrl}
-                    onClick={() =>
+        {!popularArticles ||
+        (popularArticles.fetchStatus === FetchStatusFlag.FETCHING && !popularArticles.itemList) ? (
+          <ArticleChartListPlaceholder />
+        ) : popularArticles?.itemList && popularArticles?.itemList.length > 0 ? (
+          popularArticles.itemList.map((articleKey, idx) => {
+            const { article } = articles[articleKey];
+            const articleUrl = `/article/${getArticleKeyFromData(article)}`;
+            const channelMeta =
+              articleChannelById &&
+              articleChannelById[article!.channelName] &&
+              articleChannelById[article!.channelName].channelMeta;
+            return (
+              <li key={`popular_article_${idx}`} className="ArticleChartList_Article">
+                <ConnectedTrackImpression
+                  section={section}
+                  index={idx}
+                  id={article!.id}
+                  misc={JSON.stringify({ sect_ch: `ch:${channelMeta!.id}` })}
+                >
+                  <span className="ArticleChartList_Rank">{idx + 1}</span>
+                  <ArticleThumbnail
+                    linkUrl={articleUrl}
+                    imageUrl={article!.thumbnailUrl}
+                    articleTitle={article!.title}
+                    thumbnailShape={ThumbnailShape.SQUARE}
+                    imageSize={ImageSize.HEIGHT_100}
+                    onLinkClick={() =>
                       trackingClick(
                         idx,
-                        article.id,
+                        article!.id,
                         JSON.stringify({ sect_ch: `ch:${channelMeta!.id}` }),
                       )
                     }
-                  >
-                    <span className="ArticleChartList_Meta_Title">{article.title}</span>
-                  </Link>
-                  {channelMeta ? (
+                  />
+                  <div className="ArticleChartList_Meta">
                     <Link
-                      className="ArticleChartList_Channel_Link"
-                      to={articleChannelToPath({ channelName: channelMeta.name })}
-                      onClick={() => trackingClick(idx, `ch:${channelMeta.id}`)}
+                      className="ArticleChartList_Meta_Link"
+                      to={articleUrl}
+                      onClick={() =>
+                        trackingClick(
+                          idx,
+                          article!.id,
+                          JSON.stringify({ sect_ch: `ch:${channelMeta!.id}` }),
+                        )
+                      }
                     >
-                      <span className="ArticleChartList_Meta_Channel">
-                        {channelMeta.displayName}
-                      </span>
+                      <span className="ArticleChartList_Meta_Title">{article!.title}</span>
                     </Link>
-                  ) : null}
-                </div>
-              </ConnectedTrackImpression>
-            </li>
-          );
-        })}
+                    {channelMeta ? (
+                      <Link
+                        className="ArticleChartList_Channel_Link"
+                        to={articleChannelToPath({ channelName: channelMeta.name })}
+                        onClick={() => trackingClick(idx, `ch:${channelMeta.id}`)}
+                      >
+                        <span className="ArticleChartList_Meta_Channel">
+                          {channelMeta.displayName}
+                        </span>
+                      </Link>
+                    ) : null}
+                  </div>
+                </ConnectedTrackImpression>
+              </li>
+            );
+          })
+        ) : (
+          <ArticleEmpty iconName="document" description="인기 아티클이 없습니다." />
+        )}
       </ul>
     </main>
   );
