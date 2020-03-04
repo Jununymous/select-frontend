@@ -12,6 +12,7 @@ import {
   Actions as CollectionActions,
   CollectionId,
   CollectionsState,
+  ReservedCollectionIds,
 } from 'app/services/collection';
 import { Actions } from 'app/services/home';
 import { RidiSelectState } from 'app/store';
@@ -48,7 +49,7 @@ export class Home extends React.PureComponent<
       sendPostRobotInitialRendered();
       if (!fetchedAt || Math.abs(differenceInHours(fetchedAt, Date.now())) >= 3) {
         dispatchLoadHomeRequest();
-        dispatchLoadCollectionRequest('spotlight');
+        dispatchLoadCollectionRequest(ReservedCollectionIds.SPOTLIGHT);
       }
       if (!collections.popular?.itemListByPage[1]?.itemList) {
         dispatchLoadPopularBooksRequest();

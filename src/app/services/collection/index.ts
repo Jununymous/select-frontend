@@ -14,7 +14,12 @@ export enum CollectionType {
 
 export const COUNT_PER_PAGE = 24;
 
-export type ReservedCollectionIds = 'popular' | 'recent' | 'spotlight';
+export enum ReservedCollectionIds {
+  POPULAR = 'popular',
+  RECENT = 'recent',
+  SPOTLIGHT = 'spotlight',
+}
+
 export type CollectionId = number | ReservedCollectionIds;
 
 export enum ChartSortingCrietria {
@@ -89,15 +94,15 @@ export const Actions = {
 
 export const INITIAL_STATE: CollectionsState = {
   popular: {
-    id: 'popular',
+    id: ReservedCollectionIds.POPULAR,
     itemListByPage: {},
   },
   recent: {
-    id: 'recent',
+    id: ReservedCollectionIds.RECENT,
     itemListByPage: {},
   },
   spotlight: {
-    id: 'spotlight',
+    id: ReservedCollectionIds.SPOTLIGHT,
     itemListByPage: {},
   },
 };
@@ -212,7 +217,7 @@ collectionReducer.on(Actions.loadPopularBooksRequest, (state = INITIAL_STATE, { 
   ...state,
   popular: {
     ...state.popular,
-    id: 'popular',
+    id: ReservedCollectionIds.POPULAR,
     itemListByPage: {
       ...(state.popular && state.popular.itemListByPage),
       [page]: {
@@ -239,7 +244,7 @@ collectionReducer.on(
         },
       },
       title: '인기 도서',
-      id: 'popular',
+      id: ReservedCollectionIds.POPULAR,
       itemCount: totalCount,
       type: CollectionType.CHART,
     },

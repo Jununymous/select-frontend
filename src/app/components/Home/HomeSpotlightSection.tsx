@@ -5,7 +5,7 @@ import Slider from 'react-slick';
 
 import { ConnectedInlineHorizontalBookList, DTOBookThumbnail } from 'app/components';
 import { Book } from 'app/services/book';
-import { CollectionId } from 'app/services/collection';
+import { CollectionId, ReservedCollectionIds } from 'app/services/collection';
 import { Actions, DefaultTrackingParams } from 'app/services/tracking';
 import { getSectionStringForTracking } from 'app/services/tracking/utils';
 import { stringifyAuthors } from 'app/utils/utils';
@@ -25,7 +25,11 @@ export class HomeSpotlightSection extends React.Component<Props> {
 
   private setSliderImpression(sliderIdx: number) {
     const { books, trackImpression, collectionId } = this.props;
-    const section = getSectionStringForTracking('select-book', 'home', 'spotlight');
+    const section = getSectionStringForTracking(
+      'select-book',
+      'home',
+      ReservedCollectionIds.SPOTLIGHT,
+    );
 
     const trackingStartIdx = sliderIdx > 0 ? sliderIdx - 1 : 0;
     const trackingEndIdx =
@@ -45,7 +49,11 @@ export class HomeSpotlightSection extends React.Component<Props> {
 
   public render() {
     const { books, trackClick, collectionId, title } = this.props;
-    const section = getSectionStringForTracking('select-book', 'home', 'spotlight');
+    const section = getSectionStringForTracking(
+      'select-book',
+      'home',
+      ReservedCollectionIds.SPOTLIGHT,
+    );
     return (
       <div className="HomeSection_Spotlight">
         <div className="HomeSection_Spotlight_Contents">

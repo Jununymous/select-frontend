@@ -6,7 +6,12 @@ import { camelize } from '@ridi/object-case-converter';
 import request from 'app/config/axios';
 import env from 'app/config/env';
 import { Book } from 'app/services/book';
-import { CollectionType, CollectionId, COUNT_PER_PAGE } from 'app/services/collection';
+import {
+  CollectionType,
+  CollectionId,
+  COUNT_PER_PAGE,
+  ReservedCollectionIds,
+} from 'app/services/collection';
 
 export interface CollectionResponse {
   collectionId: number;
@@ -30,7 +35,7 @@ export const requestCollection = (
 ): Promise<CollectionResponse> => {
   const url = `/api/pages/collections/${collectionId}`;
   const queryString = qs.parse(window.location.search, { ignoreQueryPrefix: true });
-  if (collectionId === 'spotlight') {
+  if (collectionId === ReservedCollectionIds.SPOTLIGHT) {
     return request({
       url: '/api/pages/collections/spotlight',
       method: 'GET',
@@ -41,7 +46,11 @@ export const requestCollection = (
   let params = {
     page,
   };
-  if (collectionId === 'popular' && queryString.test_group && queryString.test_group.length > 0) {
+  if (
+    collectionId === ReservedCollectionIds.POPULAR &&
+    queryString.test_group &&
+    queryString.test_group.length > 0
+  ) {
     params = Object.assign(params, { test_group: queryString.test_group });
   }
   return request({

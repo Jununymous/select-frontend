@@ -10,7 +10,7 @@ import { MAX_WIDTH, PageTitleText } from 'app/constants';
 
 import { GridBookListSkeleton } from 'app/placeholder/BookListPlaceholder';
 import { BookState } from 'app/services/book';
-import { Actions, ReservedCollectionState } from 'app/services/collection';
+import { Actions, ReservedCollectionState, ReservedCollectionIds } from 'app/services/collection';
 import { RidiSelectState } from 'app/store';
 
 import { getPageQuery } from 'app/services/routing/selectors';
@@ -129,7 +129,7 @@ const mapStateToProps = (rootState: RidiSelectState): CollectionStateProps => ({
 });
 const mapDispatchToProps = (dispatch: Dispatch): CollectionDispatchProps => ({
   dispatchLoadNewReleases: (page: number) =>
-    dispatch(Actions.loadCollectionRequest({ collectionId: 'recent', page })),
+    dispatch(Actions.loadCollectionRequest({ collectionId: ReservedCollectionIds.RECENT, page })),
 });
 export const ConnectedNewReleases = withRouter(
   connect(mapStateToProps, mapDispatchToProps)(NewReleases),

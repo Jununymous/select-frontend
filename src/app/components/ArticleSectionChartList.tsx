@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 import MediaQuery from 'react-responsive';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Arrow from 'app/components/Arrow';
 import { ImageSize } from 'app/constants';
 import { RidiSelectState } from 'app/store';
+import SlideArrow from 'app/components/SlideArrow';
 import { articleChannelToPath } from 'app/utils/toPath';
 import { getArticleKeyFromData } from 'app/utils/utils';
 import { useScrollSlider } from 'app/hooks/useScrollSlider';
@@ -152,23 +152,19 @@ export const ArticleSectionChartList: React.FunctionComponent<ArticleSectionChar
       <MediaQuery maxWidth={899}>
         {(isMobile: boolean) => (
           <>
-            <Arrow
+            <SlideArrow
               label="이전"
               side="left"
               onClickHandler={moveLeft}
               renderGradient={isMobile}
-              className="SlideArrowButton_Left"
-              gradientClassName="ArrowButtonGradient_Left"
-              transition={!isOnTheLeft && 'arrowTransition'}
+              isHidden={!isOnTheLeft}
             />
-            <Arrow
+            <SlideArrow
               label="다음"
               side="right"
               onClickHandler={moveRight}
               renderGradient={isMobile}
-              className="SlideArrowButton_Right"
-              gradientClassName="ArrowButtonGradient_Right"
-              transition={!isOnTheRight && 'arrowTransition'}
+              isHidden={!isOnTheRight}
             />
           </>
         )}

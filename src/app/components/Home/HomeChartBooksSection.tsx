@@ -7,7 +7,7 @@ import { Actions, DefaultTrackingParams } from 'app/services/tracking';
 import { DTOBookThumbnail } from 'app/components';
 import { MAX_WIDTH, CoverSizes } from 'app/constants';
 import { Book } from 'app/services/book';
-import { CollectionId } from 'app/services/collection';
+import { CollectionId, ReservedCollectionIds } from 'app/services/collection';
 import { groupChartBooks } from 'app/services/home/uitls';
 import { StarRating } from 'app/services/review';
 import { getSectionStringForTracking } from 'app/services/tracking/utils';
@@ -28,7 +28,11 @@ type Props = HomeChartBooksSectionProps & ReturnType<typeof mapDispatchToProps>;
 export class HomeChartBooksSection extends React.Component<Props> {
   public renderCharts(contentsCount: number) {
     const { books, trackClick, order } = this.props;
-    const section = getSectionStringForTracking('select-book', 'home', 'popular');
+    const section = getSectionStringForTracking(
+      'select-book',
+      'home',
+      ReservedCollectionIds.POPULAR,
+    );
     return (
       <div className="HomeSection_Chart">
         {books
