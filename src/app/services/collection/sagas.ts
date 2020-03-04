@@ -68,15 +68,17 @@ export function* loadPopularBooksRequest({
   payload,
 }: ReturnType<typeof Actions.loadPopularBooksRequest>) {
   const { page } = payload;
+  let userGroup = yield select((state: RidiSelectState) => state.user.userGroup);
   try {
-    let userGroup = yield select((state: RidiSelectState) => state.user.userGroup);
-
     if (!userGroup) {
       const userGroupResponse = yield call(requestUserGroup);
       userGroup = userGroupResponse.userGroup;
       yield put(UserActions.fetchUserGroupInfo({ userGroup }));
     }
-
+  } catch {
+    // userGroup fetch failure
+  }
+  try {
     const popularBooksResponse = yield call(requestPopularBooks, { userGroup, page });
     yield put(BookActions.updateBooks({ books: popularBooksResponse.books }));
     yield put(
@@ -87,7 +89,6 @@ export function* loadPopularBooksRequest({
       }),
     );
   } catch {
-    toast.failureMessage('인기 도서 목록을 불러오는데 실패했습니다.');
     yield put(Actions.afterLoadPopularBooks({ page }));
   }
 }

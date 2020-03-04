@@ -5,6 +5,7 @@ import { camelize } from '@ridi/object-case-converter';
 
 import env from 'app/config/env';
 import { Article } from 'app/services/article';
+import qs from 'qs';
 
 export interface PopularArticleListResponse {
   totalPage: number;
@@ -21,15 +22,9 @@ export const requestPopularArticleList = ({
   page?: number;
   countPerPage?: number;
 }): Promise<PopularArticleListResponse> => {
-  const paramsArray = [];
-  if (page) {
-    paramsArray.push(`page=${page}`);
-  }
-  paramsArray.push(`size=${countPerPage || 20}`);
+  const parameters = qs.stringify({ page, size: countPerPage || 20 });
   return request({
-    url: `${env.BESTSELLER_API}/select/popular/articles${
-      paramsArray.length > 0 ? `?${paramsArray.join('&')}` : ''
-    }`,
+    url: `${env.BESTSELLER_API}/select/popular/articles?${parameters}`,
     method: 'GET',
     withCredentials: true,
   }).then(

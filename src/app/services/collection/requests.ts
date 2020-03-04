@@ -62,18 +62,13 @@ export const requestPopularBooks = ({
   page?: number;
   countPerPage?: number;
 }): Promise<PopularBooksResponse> => {
-  const paramsArray = [];
-  if (userGroup) {
-    paramsArray.push(`user_group=${userGroup}`);
-  }
-  if (page) {
-    paramsArray.push(`page=${page}`);
-  }
-  paramsArray.push(`size=${countPerPage || COUNT_PER_PAGE}`);
+  const parameters = qs.stringify({
+    user_group: userGroup,
+    page,
+    size: countPerPage || COUNT_PER_PAGE,
+  });
   return request({
-    url: `${env.BESTSELLER_API}/select/popular/books${
-      paramsArray.length > 0 ? `?${paramsArray.join('&')}` : ''
-    }`,
+    url: `${env.BESTSELLER_API}/select/popular/books?${parameters}`,
     method: 'GET',
     withCredentials: true,
   }).then(

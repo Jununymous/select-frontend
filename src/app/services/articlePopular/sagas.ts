@@ -21,7 +21,6 @@ export function* loadPopularArticlesRequest({
     );
     yield put(Actions.afterLoadPopularArticles({ page, response }));
   } catch {
-    toast.failureMessage('인기 아티클 목록을 불러오는데 실패했습니다.');
     yield put(Actions.afterLoadPopularArticles({ page }));
   }
 }
