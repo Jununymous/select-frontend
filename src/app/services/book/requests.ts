@@ -80,12 +80,6 @@ export interface BookDetailResponseV1 extends Omit<BookDetailResponseV2, 'introd
 
 export type BookDetailResponse = BookDetailResponseV2 & RedirectionRequiredResponse;
 
-export interface RecommendedBook {
-  score: number;
-  rcmdId: string;
-  bookSummary: Book;
-}
-
 export const requestBooks = (bookIds: number[]): Promise<BookDetailResponse> =>
   request({
     url: `/api/books?b_ids=${bookIds.join(',')}`,
@@ -110,8 +104,8 @@ export const requestBookOwnership = (bookId: number): Promise<BookOwnershipStatu
     response => camelize<AxiosResponse<BookOwnershipStatus>>(response, { recursive: true }).data,
   );
 
-export const requestBookToBookRecommendation = (bookId: number): Promise<RecommendedBook[]> =>
+export const requestBookToBookRecommendation = (bookId: number): Promise<Book[]> =>
   request({
-    url: `/api/recommendations/books/${bookId}`,
+    url: `${env.BESTSELLER_API}/select/books/${bookId}/similar`,
     method: 'GET',
-  }).then(response => camelize<RecommendedBook[]>(response.data, { recursive: true }));
+  }).then(response => camelize<Book[]>(response.data, { recursive: true }));

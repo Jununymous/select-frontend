@@ -9,6 +9,7 @@ import {
   LegacyStaticBookState,
   LocalStorageStaticBookState,
   StaticBookState,
+  Book,
 } from 'app/services/book';
 
 import {
@@ -17,7 +18,6 @@ import {
   BookDetailResponseV2,
   requestBookDetail,
   requestBookOwnership,
-  RecommendedBook,
   requestBookToBookRecommendation,
 } from 'app/services/book/requests';
 import { RidiSelectState } from 'app/store';
@@ -137,12 +137,12 @@ export function* loadBookToBookRecommendation({
     if (isNaN(bookId)) {
       throw FetchErrorFlag.UNEXPECTED_BOOK_ID;
     }
-    const response: RecommendedBook[] = yield call(requestBookToBookRecommendation, bookId);
+    const response: Book[] = yield call(requestBookToBookRecommendation, bookId);
     if (response && response.length >= 0) {
       yield put(
         Actions.loadBookToBookRecommendationSuccess({
           bookId,
-          recommendedBooks: response.map((bookData: RecommendedBook) => bookData.bookSummary),
+          recommendedBooks: response,
         }),
       );
     }
