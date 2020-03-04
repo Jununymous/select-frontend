@@ -7,7 +7,7 @@ import { ArticleResponse } from 'app/services/article/requests';
 import { ArticleHomeSectionType } from 'app/services/articleHome';
 import { Actions as PopularArticleActions } from 'app/services/articlePopular';
 import { ArticleSectionChartList } from 'app/components/ArticleSectionChartList';
-import { ArticleSectionHeader } from 'app/components/ArticleHome/ArticleHomeListSection';
+import { ArticleSectionHeader } from 'app/components/ArticleHome/ArticleSectionHeader';
 import { ArticleSectionHeaderPlaceholder } from 'app/placeholder/ArticleSectionHeaderPlaceholder';
 import { ArticleSectionChartListPlaceholder } from 'app/placeholder/ArticleSectionChartListPlaceholder';
 
@@ -37,25 +37,25 @@ export const ArticleHomeChartSection: React.FunctionComponent<ArticleHomeSection
     dispatch(PopularArticleActions.loadPopularArticlesRequest({ page: 1 }));
   }, []);
 
-  return (
+  if (popularArticle?.fetchStatus === FetchStatusFlag.FETCHING) {
+    return (
+      <section className="ArticleHomeSection">
+        <ArticleSectionHeaderPlaceholder />
+        <ArticleSectionChartListPlaceholder />
+      </section>
+    );
+  }
+
+  return popularArticle?.itemList ? (
     <section className="ArticleHomeSection">
-      {popularArticle?.fetchStatus === FetchStatusFlag.FETCHING ? (
-        <>
-          <ArticleSectionHeaderPlaceholder />
-          <ArticleSectionChartListPlaceholder />
-        </>
-      ) : popularArticle?.itemList ? (
-        <>
-          <ArticleSectionHeader title={title} />
-          <ArticleSectionChartList
-            articleList={popularArticle?.itemList.map(id => articles[id].article!)}
-            serviceTitleForTracking="select-article"
-            pageTitleForTracking="home"
-            uiPartTitleForTracking={`${articleHomeSectionType.replace('ArticleList', '')}`}
-            miscTracking={JSON.stringify({ sect_order: order })}
-          />
-        </>
-      ) : null}
+      <ArticleSectionHeader title={title} />
+      <ArticleSectionChartList
+        articleList={popularArticle?.itemList.map(id => articles[id].article!)}
+        serviceTitleForTracking="select-article"
+        pageTitleForTracking="home"
+        uiPartTitleForTracking={`${articleHomeSectionType.replace('ArticleList', '')}`}
+        miscTracking={JSON.stringify({ sect_order: order })}
+      />
     </section>
-  );
+  ) : null;
 };
