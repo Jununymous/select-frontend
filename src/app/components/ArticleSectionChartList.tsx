@@ -83,16 +83,16 @@ export const ArticleSectionChartList: React.FunctionComponent<ArticleSectionChar
     <div className="ArticleChartList_Wrapper">
       <div className="ArticleChartGroup_Container" ref={ref}>
         {articleList &&
-          articleList &&
           groupChartActicles(articleList, CHART_GROUPING_COUNT).map((groupedArticles, groupIdx) => (
-            <ol className="ArticleChartGroup" start={groupIdx * 5 + 1} key={groupIdx}>
+            <ol
+              className="ArticleChartGroup"
+              start={groupIdx * CHART_GROUPING_COUNT + 1}
+              key={groupIdx}
+            >
               {groupedArticles.map((article, idxInGroup) => {
                 const index = groupIdx * CHART_GROUPING_COUNT + idxInGroup;
                 const articleUrl = `/article/${getArticleKeyFromData(article)}`;
-                const channelMeta =
-                  articleChannelById &&
-                  articleChannelById[article.channelName] &&
-                  articleChannelById[article.channelName].channelMeta;
+                const channelMeta = articleChannelById[article.channelName]?.channelMeta;
                 return (
                   <li key={idxInGroup} className="ArticleChartList_Article">
                     <ConnectedTrackImpression
@@ -112,7 +112,7 @@ export const ArticleSectionChartList: React.FunctionComponent<ArticleSectionChar
                           trackingClick(
                             index,
                             article.id,
-                            JSON.stringify({ sect_ch: `ch:${channelMeta!.id}` }),
+                            JSON.stringify({ sect_ch: `ch:${channelMeta && channelMeta.id}` }),
                           )
                         }
                       />
@@ -124,7 +124,7 @@ export const ArticleSectionChartList: React.FunctionComponent<ArticleSectionChar
                             trackingClick(
                               index,
                               article.id,
-                              JSON.stringify({ sect_ch: `ch:${channelMeta!.id}` }),
+                              JSON.stringify({ sect_ch: `ch:${channelMeta && channelMeta.id}` }),
                             )
                           }
                         >
