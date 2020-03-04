@@ -1,17 +1,17 @@
-import classNames from 'classnames';
-import differenceInHours from 'date-fns/differenceInHours';
 import React from 'react';
+import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
-
-import { HelmetWithTitle } from 'app/components';
-import { ArticleHomeSection } from 'app/components/ArticleHome/ArticleHomeSection';
-import { ConnectedBigBannerCarousel } from 'app/components/Home/BigBanner';
-import { FetchStatusFlag, PageTitleText } from 'app/constants';
-import { Actions as ArticleFollowingActions } from 'app/services/articleFollowing';
-import { Actions, ArticleHomeSectionType, ArticleSectionType } from 'app/services/articleHome';
+import differenceInHours from 'date-fns/differenceInHours';
 
 import { RidiSelectState } from 'app/store';
+import { HelmetWithTitle } from 'app/components';
+import { FetchStatusFlag, PageTitleText } from 'app/constants';
+import { ConnectedBigBannerCarousel } from 'app/components/Home/BigBanner';
+import { Actions, ArticleHomeSectionType } from 'app/services/articleHome';
 import { sendPostRobotInitialRendered } from 'app/utils/inAppMessageEvents';
+import { Actions as ArticleFollowingActions } from 'app/services/articleFollowing';
+import { ArticleHomeListSection } from 'app/components/ArticleHome/ArticleHomeListSection';
+import { ArticleHomeChartSection } from 'app/components/ArticleHome/ArticleHomeChartSection';
 
 export const ArticleHome: React.FunctionComponent = () => {
   const { fetchedAt, hasAvailableTicket, unseenFeedsFetchStatus } = useSelector(
@@ -51,25 +51,22 @@ export const ArticleHome: React.FunctionComponent = () => {
       </div>
       <ConnectedBigBannerCarousel />
       <div className="ArticleHome_Panel">
-        <ArticleHomeSection
+        <ArticleHomeListSection
           title="최근 추가된 아티클"
-          type={ArticleSectionType.LIST}
           articleHomeSectionType={ArticleHomeSectionType.RECENT}
           order={0}
         />
       </div>
       <div className="ArticleHome_Panel">
-        <ArticleHomeSection
+        <ArticleHomeChartSection
           title="인기 아티클"
-          type={ArticleSectionType.CHART}
           articleHomeSectionType={ArticleHomeSectionType.POPULAR}
           order={1}
         />
       </div>
       <div className="ArticleHome_Panel">
-        <ArticleHomeSection
+        <ArticleHomeListSection
           title="추천 아티클"
-          type={ArticleSectionType.LIST}
           articleHomeSectionType={ArticleHomeSectionType.RECOMMEND}
           order={2}
         />

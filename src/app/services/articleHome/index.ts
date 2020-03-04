@@ -27,11 +27,6 @@ export const Actions = {
   }>('updateBannerIndex'),
 };
 
-export enum ArticleSectionType {
-  'CHART' = 'CHART',
-  'LIST' = 'LIST',
-}
-
 export enum ArticleHomeSectionType {
   RECENT = 'recentArticleList',
   POPULAR = 'popularArticleList',
