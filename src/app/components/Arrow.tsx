@@ -3,7 +3,7 @@
  */
 import classNames from 'classnames';
 import React from 'react';
-import MediaQuery from 'react-responsive';
+import MediaQuery, { useMediaQuery } from 'react-responsive';
 
 interface ArrowProps {
   side?: 'left' | 'right';
@@ -27,32 +27,27 @@ const Arrow: React.FunctionComponent<ArrowProps> = props => {
     e.preventDefault();
     onClickHandler(e);
   };
+  const isButtonVisible = useMediaQuery({ query: '(min-device-width: 900px)' });
   return (
-    <MediaQuery minWidth={900}>
-      {(isButtonVisible: boolean) => (
-        <>
-          {renderGradient && (
-            <div
-              className={classNames('ArrowButtonGradient', gradientClassName, transition || '')}
-            />
-          )}
-          {isButtonVisible && (
-            <button
-              type="button"
-              onClick={handleClick}
-              className={classNames('SlideArrowButton', className, transition || '')}
-            >
-              <ArrowV
-                className={classNames(
-                  side === 'left' ? 'SlideArrowButtonIcon_Left' : 'SlideArrowButtonIcon_Right',
-                )}
-              />
-              <span className="a11y">{props.label}</span>
-            </button>
-          )}
-        </>
+    <>
+      {renderGradient && (
+        <div className={classNames('ArrowButtonGradient', gradientClassName, transition || '')} />
       )}
-    </MediaQuery>
+      {isButtonVisible && (
+        <button
+          type="button"
+          onClick={handleClick}
+          className={classNames('SlideArrowButton', className, transition || '')}
+        >
+          <ArrowV
+            className={classNames(
+              side === 'left' ? 'SlideArrowButtonIcon_Left' : 'SlideArrowButtonIcon_Right',
+            )}
+          />
+          <span className="a11y">{props.label}</span>
+        </button>
+      )}
+    </>
   );
 };
 
