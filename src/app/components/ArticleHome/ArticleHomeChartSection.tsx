@@ -48,9 +48,7 @@ export const ArticleHomeChartSection: React.FunctionComponent<ArticleHomeSection
         <>
           <ArticleSectionHeader title={title} />
           <ArticleSectionChartList
-            articleList={
-              popularArticle?.itemList && popularArticle?.itemList.map(id => articles[id].article!)
-            }
+            articleList={popularArticle?.itemList.map(id => articles[id].article!)}
             serviceTitleForTracking="select-article"
             pageTitleForTracking="home"
             uiPartTitleForTracking={`${articleHomeSectionType.replace('ArticleList', '')}`}
