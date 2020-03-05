@@ -140,7 +140,7 @@ const mapStateToProps = (state: RidiSelectState, ownProps: OwnProps): BookDetail
     bookEndDateTime: bookDetail ? bookDetail.endDatetime : '',
     env: state.environment,
     solidBackgroundColorRGBString: getSolidBackgroundColorRGBString(state),
-    bookToBookRecommendationFetchStatus: bookDetail
+    bookToBookRecommendationFetchStatus: bookState?.bookToBookRecommendationFetchStatus
       ? bookState.bookToBookRecommendationFetchStatus
       : FetchStatusFlag.IDLE,
     recommendedBooks:
