@@ -1,17 +1,16 @@
 /**
  * made by jeongsik@ridi.com
  */
-import classNames from 'classnames';
 import React from 'react';
-import MediaQuery, { useMediaQuery } from 'react-responsive';
+import { useMediaQuery } from 'react-responsive';
+
+import * as styles from 'app/components/SlideArrow/styles';
 
 interface ArrowProps {
   side?: 'left' | 'right';
   renderGradient?: boolean;
-  className: string;
-  gradientClassName: string;
-  transition: boolean | string;
   label: string;
+  isHidden?: boolean;
   onClickHandler: (e: React.FormEvent) => void;
 }
 
@@ -21,28 +20,30 @@ const ArrowV = (props: any) => (
   </svg>
 );
 
-const Arrow: React.FunctionComponent<ArrowProps> = props => {
-  const { transition, side, className, gradientClassName, onClickHandler, renderGradient } = props;
+const SlideArrow: React.FunctionComponent<ArrowProps> = props => {
+  const { side, onClickHandler, renderGradient, isHidden } = props;
   const handleClick = (e: React.FormEvent) => {
     e.preventDefault();
     onClickHandler(e);
   };
   const isButtonVisible = useMediaQuery({ query: '(min-device-width: 900px)' });
-  return (
+  return isHidden ? null : (
     <>
       {renderGradient && (
-        <div className={classNames('ArrowButtonGradient', gradientClassName, transition || '')} />
+        <div
+          css={side === 'left' ? styles.ArrowButtonGradient_Left : styles.ArrowButtonGradient_Right}
+        />
       )}
       {isButtonVisible && (
         <button
           type="button"
           onClick={handleClick}
-          className={classNames('SlideArrowButton', className, transition || '')}
+          css={side === 'left' ? styles.SlideArrowButton_Left : styles.SlideArrowButton_Right}
         >
           <ArrowV
-            className={classNames(
-              side === 'left' ? 'SlideArrowButtonIcon_Left' : 'SlideArrowButtonIcon_Right',
-            )}
+            css={
+              side === 'left' ? styles.SlideArrowButtonIcon_Left : styles.SlideArrowButtonIcon_Right
+            }
           />
           <span className="a11y">{props.label}</span>
         </button>
@@ -51,4 +52,4 @@ const Arrow: React.FunctionComponent<ArrowProps> = props => {
   );
 };
 
-export default React.memo(Arrow);
+export default React.memo(SlideArrow);

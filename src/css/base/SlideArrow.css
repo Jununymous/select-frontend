@@ -94,17 +94,3 @@
   opacity: 0 !important;
   pointer-events: none;
 }
-
-.scrollBarHidden {
-  overflow: -moz-scrollbars-none;
-  -webkit-overflow-scrolling: touch;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-
-  &::-webkit-scrollbar {
-    appearance: none;
-    width: 0;
-    height: 0;
-    display: none !important;
-  }
-}
