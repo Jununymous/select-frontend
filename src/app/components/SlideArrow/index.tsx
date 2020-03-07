@@ -1,6 +1,3 @@
-/**
- * made by jeongsik@ridi.com
- */
 import React from 'react';
 import { useMediaQuery } from 'react-responsive';
 
@@ -31,10 +28,11 @@ const SlideArrow: React.FunctionComponent<ArrowProps> = props => {
     <>
       {renderGradient && (
         <div
+          className={isHidden ? 'hidden' : ''}
           css={side === 'left' ? styles.ArrowButtonGradient_Left : styles.ArrowButtonGradient_Right}
         />
       )}
-      {isButtonVisible && (
+      {isButtonVisible && !isHidden && (
         <button
           type="button"
           onClick={handleClick}

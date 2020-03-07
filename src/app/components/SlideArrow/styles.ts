@@ -18,6 +18,10 @@ export const SlideArrowButton = css`
   cursor: pointer;
   opacity: 0.95;
 
+  &.hidden {
+    opacity: 0;
+  }
+
   &:hover {
     opacity: 0.6;
   }
@@ -60,22 +64,10 @@ export const SlideArrowButton_Left = css`
   }
 `;
 
-export const SlideArrowButton_Left_Hidden = css`
-  ${SlideArrowButton_Left}
-
-  opacity: 0;
-`;
-
 export const SlideArrowButton_Right = css`
   ${SlideArrowButton}
 
   right: -45px;
-`;
-
-export const SlideArrowButton_Right_Hidden = css`
-  ${SlideArrowButton_Right}
-
-  opacity: 0;
 `;
 
 export const ArrowButtonGradient = css`
@@ -97,23 +89,11 @@ export const ArrowButtonGradient_Left = css`
   background-image: linear-gradient(to left, rgba(255, 255, 255, 0), white 100%);
 `;
 
-export const ArrowButtonGradient_Left_Hidden = css`
-  ${ArrowButtonGradient_Left}
-
-  opacity: 0;
-`;
-
 export const ArrowButtonGradient_Right = css`
   ${ArrowButtonGradient}
 
   right: 0;
   background-image: linear-gradient(to right, rgba(255, 255, 255, 0), white 100%);
-`;
-
-export const ArrowButtonGradient_Right_Hidden = css`
-  ${ArrowButtonGradient_Right}
-
-  opacity: 0;
 `;
 
 export const SlideArrowButtonIcon_Left = css`
