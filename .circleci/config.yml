@@ -169,7 +169,6 @@ workflows:
             branches:
               only:
                 - master
-                - feature/change-bestseller-api-only
           dev: true
       - deploy:
           name: deploy-dev
