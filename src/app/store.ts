@@ -74,8 +74,8 @@ import {
   articleChannelReducer,
   ArticleChannelState,
 } from 'app/services/articleChannel';
-import { PopularArticleListState, popularArticleListReducer } from 'app/services/articlePopular';
-import { articlePopularRootSaga } from 'app/services/articlePopular/sagas';
+import { articleListRootSaga } from './services/articleList/sagas';
+import { articleListReducer, ArticleListState } from './services/articleList/index';
 
 declare global {
   interface Window {
@@ -105,7 +105,7 @@ function* rootSaga(dispatch: Dispatch) {
     channelRootSaga(),
     articleFollowingRootSaga(),
     articleFavoriteRootSaga(),
-    articlePopularRootSaga(),
+    articleListRootSaga(),
   ]);
 }
 
@@ -128,11 +128,11 @@ export interface RidiSelectState {
   closingReservedBooks: ClosingReservedBooksState;
   articlesById: ArticlesState;
   articleHome: ArticleHomeState;
+  articleList: ArticleListState;
   articleChannels: ArticleChannelListState;
   articleChannelById: ArticleChannelState;
   articleFollowing: ArticleFollowingState;
   favoriteArticle: FavoriteArticleListState;
-  popularArticle: PopularArticleListState;
 }
 
 const sagaMiddleware = createSagaMiddleware();
@@ -167,11 +167,11 @@ const reducers = combineReducers({
 
   articlesById: articleReducer,
   articleHome: articleHomeReducer,
+  articleList: articleListReducer,
   articleChannels: articleChannelListReducer,
   articleChannelById: articleChannelReducer,
   articleFollowing: articleFollowReducer,
   favoriteArticle: favoriteArticleListReducer,
-  popularArticle: popularArticleListReducer,
 });
 
 const middleware = [routerMiddleware(browserHistory), sagaMiddleware];

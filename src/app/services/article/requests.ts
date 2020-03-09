@@ -23,36 +23,11 @@ export interface ArticleResponse extends Article {
   channel?: ArticleChannel;
 }
 
-export interface ArticleListResponse {
-  count: number;
-  next?: string;
-  previous?: string;
-  results: ArticleResponse[];
-}
-
 export interface FavoriteArticleActionResponse {
   channelName: string;
   contentId: number;
   isFavorite: boolean;
 }
-
-export const requestArticles = (
-  requestQueries?: ArticleRequestQueries,
-  articleIds?: number[],
-): Promise<ArticleListResponse> => {
-  let requestUrl = `/article/articles${buildArticleRequestQueriesToString(requestQueries)}`;
-  if (articleIds) {
-    requestUrl = `/article/articles${buildArticleRequestQueriesToString(
-      requestQueries,
-    )}&ids=${articleIds}&size=24`;
-  }
-  return request({
-    url: requestUrl,
-    method: 'GET',
-  }).then(
-    response => camelize<AxiosResponse<ArticleListResponse>>(response, { recursive: true }).data,
-  );
-};
 
 export const requestSingleArticle = (
   channelName: string,

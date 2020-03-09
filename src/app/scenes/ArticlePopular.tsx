@@ -1,24 +1,24 @@
+import { Link } from 'react-router-dom';
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { RidiSelectState } from 'app/store';
-import { HelmetWithTitle, ConnectedPageHeader } from 'app/components';
-import { Actions } from 'app/services/articlePopular';
-import { Actions as TrackingActions } from 'app/services/tracking';
 import { getArticleKeyFromData } from 'app/utils/utils';
+import { articleChannelToPath } from 'app/utils/toPath';
+import { ArticleEmpty } from 'app/components/ArticleEmpty';
+import { ArticleThumbnail } from 'app/components/ArticleThumbnail';
+import { Actions as TrackingActions } from 'app/services/tracking';
+import { Actions, ArticleListType } from 'app/services/articleList';
+import { HelmetWithTitle, ConnectedPageHeader } from 'app/components';
+import { ThumbnailShape } from 'app/components/ArticleThumbnail/types';
 import { PageTitleText, FetchStatusFlag, ImageSize } from 'app/constants';
 import { ConnectedTrackImpression } from 'app/components/TrackImpression';
 import { getSectionStringForTracking } from 'app/services/tracking/utils';
-import { ArticleThumbnail } from 'app/components/ArticleThumbnail';
-import { ThumbnailShape } from 'app/components/ArticleThumbnail/types';
-import { Link } from 'react-router-dom';
-import { articleChannelToPath } from 'app/utils/toPath';
-import { ArticleEmpty } from 'app/components/ArticleEmpty';
 import { ArticleChartListPlaceholder } from 'app/placeholder/ArticleChartListPlaceholder';
 
 const ArticlePopular: React.FunctionComponent = () => {
   const popularArticles = useSelector(
-    (state: RidiSelectState) => state.popularArticle.itemListByPage[1],
+    (state: RidiSelectState) => state.articleList[ArticleListType.POPULAR].itemListByPage[1],
   );
   const articles = useSelector((state: RidiSelectState) => state.articlesById);
   const articleChannelById = useSelector((state: RidiSelectState) => state.articleChannelById);
@@ -38,7 +38,9 @@ const ArticlePopular: React.FunctionComponent = () => {
       (!popularArticles?.itemList && popularArticles.fetchStatus !== FetchStatusFlag.FETCHING) ||
       popularArticles.itemList.length < 100
     ) {
-      dispatch(Actions.loadPopularArticlesRequest({ page: 1, size: 100 }));
+      dispatch(
+        Actions.loadArticleListRequest({ type: ArticleListType.POPULAR, page: 1, size: 100 }),
+      );
     }
   }, []);
 
@@ -54,10 +56,7 @@ const ArticlePopular: React.FunctionComponent = () => {
           popularArticles.itemList.map((articleKey, idx) => {
             const { article } = articles[articleKey];
             const articleUrl = `/article/${getArticleKeyFromData(article)}`;
-            const channelMeta =
-              articleChannelById &&
-              articleChannelById[article!.channelName] &&
-              articleChannelById[article!.channelName].channelMeta;
+            const channelMeta = articleChannelById[article!.channelName]?.channelMeta;
             return (
               <li key={`popular_article_${idx}`} className="ArticleChartList_Article">
                 <ConnectedTrackImpression
